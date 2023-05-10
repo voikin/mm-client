@@ -1,26 +1,51 @@
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import {
+	FieldErrors,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useForm,
+} from 'react-hook-form'
 import styles from './LoginForm.module.css'
 import { useEffect } from 'react'
 import { ILoginForm } from './LoginForm.interface'
+import { useLoginMutation } from '../../store/api/auth.api'
+import { useDispatch } from 'react-redux'
+import { authActions } from '../../store/auth/auth.slice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 export default function LoginForm() {
+	const dispatch = useDispatch()
+
+	const [mutate, { isLoading }] = useLoginMutation()
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		clearErrors,
 	} = useForm<ILoginForm>()
-	const submit: SubmitHandler<ILoginForm> = (data: ILoginForm) =>
-		console.log(data)
-	const error: SubmitErrorHandler<ILoginForm> = (errors: any) =>
-		console.log(errors)
+
+	const submitHandler: SubmitHandler<ILoginForm> = async (data: ILoginForm) => {
+		try {
+			const res = await mutate(data).unwrap()
+			console.log(res)
+			dispatch(authActions.setAuth(true))
+		} catch (e) {
+			console.error(e)
+			dispatch(authActions.setAuth(false))
+		}
+	}
+
+	const errorHandler: SubmitErrorHandler<ILoginForm> = (
+		errors: FieldErrors<ILoginForm>
+	) => console.log(errors)
 
 	useEffect(() => clearErrors(), [])
 
 	return (
 		<div className={styles['login-card']}>
 			<form
-				onSubmit={handleSubmit(submit, error)}
+				onSubmit={handleSubmit(submitHandler, errorHandler)}
 				className={styles['login-card__form']}
 			>
 				<div className={styles['login-card__item']}>
@@ -54,7 +79,7 @@ export default function LoginForm() {
 						styles['login-card__item'] + ' ' + styles['login-card__button']
 					}
 				>
-					Войти
+					{isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Войти'}
 				</button>
 			</form>
 		</div>
