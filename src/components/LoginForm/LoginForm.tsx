@@ -5,7 +5,7 @@ import {
 	useForm,
 } from 'react-hook-form'
 import styles from './LoginForm.module.css'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { ILoginForm } from './LoginForm.interface'
 import { useLoginMutation } from '../../store/api/auth.api'
 import { useDispatch } from 'react-redux'
