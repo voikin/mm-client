@@ -6,7 +6,7 @@ import {
 } from 'react-hook-form'
 import styles from './SignupForm.module.css'
 import { useEffect, useRef } from 'react'
-import { useLoginMutation } from '../../store/api/auth.api'
+import { useLoginMutation, useSignupMutation } from '../../store/api/auth.api'
 import { useDispatch } from 'react-redux'
 import { authActions } from '../../store/auth/auth.slice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,7 +16,7 @@ import { ISignupForm } from './SignupForm.interface'
 export default function SignupForm() {
 	const dispatch = useDispatch()
 
-	const [mutate, { isLoading }] = useLoginMutation()
+	const [mutate, { isLoading }] = useSignupMutation()
 
 	const {
 		register,
@@ -35,10 +35,8 @@ export default function SignupForm() {
 		try {
 			const res = await mutate(data).unwrap()
 			console.log(res)
-			dispatch(authActions.setAuth(true))
 		} catch (e) {
 			console.error(e)
-			dispatch(authActions.setAuth(false))
 		}
 	}
 
