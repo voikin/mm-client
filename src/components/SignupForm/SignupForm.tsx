@@ -12,11 +12,16 @@ import { authActions } from '../../store/auth/auth.slice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPassport, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { ISignupForm } from './SignupForm.interface'
+import { useMutation } from 'react-query'
+import AuthService from '../../services/AuthService'
+import { useAuthStore } from '../../stores/authStore'
 
 export default function SignupForm() {
-	const dispatch = useDispatch()
+	const { isAuth, isMailSended, sendMail } = useAuthStore()
 
-	const [mutate, { isLoading }] = useSignupMutation()
+	const signupMutation = useMutation(AuthService.signup, {
+		onError: (error) => console.log(error),
+	})
 
 	const {
 		register,
@@ -32,12 +37,8 @@ export default function SignupForm() {
 	const submitHandler: SubmitHandler<ISignupForm> = async (
 		data: ISignupForm
 	) => {
-		try {
-			const res = await mutate(data).unwrap()
-			console.log(res)
-		} catch (e) {
-			console.error(e)
-		}
+		signupMutation.mutate(data)
+		sendMail()
 	}
 
 	const errorHandler: SubmitErrorHandler<ISignupForm> = (
@@ -45,6 +46,29 @@ export default function SignupForm() {
 	) => console.log(errors)
 
 	useEffect(() => clearErrors(), [])
+
+	if (isAuth)
+		return (
+			<>
+				<div className={styles['login-card']}>
+					<div className={styles['login-card__message']}>
+						Вход выполнен успешно!
+					</div>
+				</div>
+			</>
+		)
+
+	if (isMailSended)
+		return (
+			<>
+				<div className={styles['login-card']}>
+					<div className={styles['login-card__message']}>
+						Пожалуйста, подтвердите аккаунт в электронном письме. После этого
+						авторизуйтесь на сервисе
+					</div>
+				</div>
+			</>
+		)
 
 	return (
 		<div className={styles['login-card']}>
@@ -127,7 +151,11 @@ export default function SignupForm() {
 						styles['login-card__item'] + ' ' + styles['login-card__button']
 					}
 				>
-					{isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Войти'}
+					{signupMutation.isLoading ? (
+						<FontAwesomeIcon icon={faSpinner} spin />
+					) : (
+						'Войти'
+					)}
 				</button>
 			</form>
 		</div>

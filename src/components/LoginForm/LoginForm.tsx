@@ -5,18 +5,21 @@ import {
 	useForm,
 } from 'react-hook-form'
 import styles from './LoginForm.module.css'
-import { FC, useEffect } from 'react'
+import { useEffect } from 'react'
 import { ILoginForm } from './LoginForm.interface'
-import { useLoginMutation } from '../../store/api/auth.api'
-import { useDispatch } from 'react-redux'
-import { authActions } from '../../store/auth/auth.slice'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { useMutation } from 'react-query'
+import AuthService from '../../services/AuthService'
+import { AuthResponse } from '../../models/response/AuthResponse'
+import { useAuthStore } from '../../stores/authStore'
 
 export default function LoginForm() {
-	const dispatch = useDispatch()
+	const { login, isAuth } = useAuthStore()
 
-	const [mutate, { isLoading }] = useLoginMutation()
+	const loginMutation = useMutation(AuthService.login, {
+		onSuccess: (data: AuthResponse) => login(data),
+	})
 
 	const {
 		register,
@@ -26,14 +29,7 @@ export default function LoginForm() {
 	} = useForm<ILoginForm>()
 
 	const submitHandler: SubmitHandler<ILoginForm> = async (data: ILoginForm) => {
-		try {
-			const res = await mutate(data).unwrap()
-			console.log(res)
-			dispatch(authActions.setAuth(true))
-		} catch (e) {
-			console.error(e)
-			dispatch(authActions.setAuth(false))
-		}
+		loginMutation.mutate(data)
 	}
 
 	const errorHandler: SubmitErrorHandler<ILoginForm> = (
@@ -41,6 +37,17 @@ export default function LoginForm() {
 	) => console.log(errors)
 
 	useEffect(() => clearErrors(), [])
+
+	if (isAuth)
+		return (
+			<>
+				<div className={styles['login-card']}>
+					<div className={styles['login-card__message']}>
+						Вход выполнен успешно!
+					</div>
+				</div>
+			</>
+		)
 
 	return (
 		<div className={styles['login-card']}>
@@ -78,8 +85,13 @@ export default function LoginForm() {
 					className={
 						styles['login-card__item'] + ' ' + styles['login-card__button']
 					}
+					disabled={loginMutation.isLoading}
 				>
-					{isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Войти'}
+					{loginMutation.isLoading ? (
+						<FontAwesomeIcon icon={faSpinner} spin />
+					) : (
+						'Войти'
+					)}
 				</button>
 			</form>
 		</div>

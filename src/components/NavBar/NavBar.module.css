@@ -1,8 +1,8 @@
 .layout {
 	background: linear-gradient(to left top, #141414, #242424);
 	height: 40px;
-	display: flex;
-	justify-content: center;
+	/* display: flex; */
+	/* justify-content: center; */
 }
 
 .navbar {
@@ -11,6 +11,13 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
+	position: relative;
+	justify-content: space-between;
+}
+
+.navbar_navigation {
+	display: flex;
+	justify-content: right;
 }
 
 .navbar__home {
@@ -27,29 +34,30 @@
 
 .navbar__home:active {
 	color: #c9ffe9;
-    transform: scale(1);
+	transform: scale(1);
 }
 
 .navbar__item {
 	color: white;
 	text-decoration: none;
-	border-left: #00000027 5px solid;
+	/* border-left: #00000027 5px solid; */
 	padding: 10px;
 	/* transition: all 0.2 s ease-in-out; */
 }
 
 .navbar__item__login {
-    color: white;
+	color: white;
 	text-decoration: none;
 	transition: all 0.1s ease-in-out;
+	height: 100%;
 }
 
 .navbar__item__login:hover {
-	font-size: 17px;
+	transform: scale(1.05);
 }
 
 .navbar__item__login:active {
-	font-size: 16px;
+	transform: scale(1);
 }
 
 @keyframes blink {
@@ -64,4 +72,22 @@
 	to {
 		color: #fff;
 	}
+}
+
+.logo_block {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	margin-left: 10px;
+	user-select: none;
+}
+
+.logo_img {
+	height: 30px;
+}
+
+.logo_text {
+	margin-left: 10px;
 }
