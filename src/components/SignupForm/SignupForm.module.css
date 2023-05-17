@@ -68,3 +68,9 @@
 	font-weight: 400;
 	width: max-content;
 }
+
+.login-card__message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
