@@ -25,9 +25,8 @@ export const useAuthStore = create<UserState>()(
 
 		login: async (data: AuthResponse) => {
 			localStorage.setItem('accessToken', data.accessToken)
-			console.log('authed')
 			set((state) => {
-				state.user = data.user
+				state.user = data.authDto
 				state.isAuth = true
 				state.isMailSended = false
 			})

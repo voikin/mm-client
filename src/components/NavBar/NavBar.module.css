@@ -21,7 +21,7 @@
 }
 
 .navbar__home {
-	color: #28c282;
+	color: #6ceb74;
 	cursor: pointer;
 	transition: all 0.1s ease-in-out;
 	padding: 10px;
@@ -33,7 +33,7 @@
 }
 
 .navbar__home:active {
-	color: #c9ffe9;
+	color: #6ceb74;
 	transform: scale(1);
 }
 

@@ -3,12 +3,12 @@ import './App.module.css'
 import LoginPage from './pages/LoginPage/LoginPage'
 import HomePage from './pages/HomePage/HomePage'
 import SignupPage from './pages/SignupPage/SignupPage'
-import UserCabinetPage from './pages/UserCabinetPage/UserCabinetPage'
 import LayoutPage from './pages/LayoutPage/LayoutPage'
 import { useMutation } from 'react-query'
 import { useEffect } from 'react'
 import { useAuthStore } from './stores/authStore'
 import AuthService from './services/AuthService'
+import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
 
 const router = createBrowserRouter([
 	{
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: 'user',
-				element: <UserCabinetPage />,
+				element: <UserProfilePage />,
 			},
 		],
 	},
@@ -54,7 +54,7 @@ const App = () => {
 
 	return (
 		<>
-				<RouterProvider router={router} />
+			<RouterProvider router={router} />
 		</>
 	)
 }

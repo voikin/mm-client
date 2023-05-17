@@ -1,5 +1,5 @@
 import { AuthResponse } from './../models/response/AuthResponse'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 import $api, { API_URL } from '../http'
 import { LoginRequest, SignupRequest } from '../models/requests/AuthRequests'
 

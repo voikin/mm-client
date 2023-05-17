@@ -2,16 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './NavBar.module.css'
 import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
-import { useAppSelector } from '../../store/typedHooks'
 import { useAuthStore } from '../../stores/authStore'
 import { useMutation } from 'react-query'
 import AuthService from '../../services/AuthService'
 import logo from './../../assets/logo.svg'
 
 const NavBar = () => {
-	// const isAuth = useAppSelector(state => state.auth.isAuth)
-	const { isAuth, logout } = useAuthStore()
-	console.log(isAuth)
+	const { isAuth, logout, user } = useAuthStore()
 	const { mutate: logoutMutate } = useMutation(AuthService.logout, {
 		onSuccess: () => logout(),
 	})
@@ -21,6 +18,7 @@ const NavBar = () => {
 				<div className={styles.logo_block}>
 					<img src={logo} alt='logo' className={styles.logo_img} />
 					<p className={styles.logo_text}>mealmapper</p>
+					{isAuth && <p className={styles.logo_text}>{user.email}</p>}
 				</div>
 				<div className={styles.navbar_navigation}>
 					<Link className={styles.navbar__home} to={'/'}>
@@ -34,7 +32,7 @@ const NavBar = () => {
 									styles.navbar__item + ' ' + styles.navbar__item__login
 								}
 							>
-								Log in
+								Войти
 							</Link>
 							<Link
 								to={'/signup'}
@@ -42,7 +40,7 @@ const NavBar = () => {
 									styles.navbar__item + ' ' + styles.navbar__item__login
 								}
 							>
-								Sign up
+								Зарегистрироваться
 							</Link>
 						</>
 					) : (
