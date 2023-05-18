@@ -2,8 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useQuery } from 'react-query'
 import UserService from '../../services/UserService'
-import { useEffect, useState } from 'react'
-import { UserInfoResponse } from '../../models/response/UserInfoResponse'
+import { useEffect } from 'react'
 
 export default function UserProfile() {
 	const fetchUserDataQuery = useQuery('userData', UserService.fetchUserData, {
