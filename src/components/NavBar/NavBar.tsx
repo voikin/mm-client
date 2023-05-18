@@ -21,7 +21,7 @@ const NavBar = () => {
 					{isAuth && <p className={styles.logo_text}>{user.email}</p>}
 				</div>
 				<div className={styles.navbar_navigation}>
-					<Link className={styles.navbar__home} to={'/'}>
+					<Link className={styles.navbar__home} to={isAuth ? '/feed' : '/'}>
 						<FontAwesomeIcon icon={faHouse} />
 					</Link>
 					{!isAuth ? (

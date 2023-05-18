@@ -9,6 +9,9 @@ import { useEffect } from 'react'
 import { useAuthStore } from './stores/authStore'
 import AuthService from './services/AuthService'
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
+import FeedPage from './pages/FeedPage/FeedPage'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const router = createBrowserRouter([
 	{
@@ -30,6 +33,10 @@ const router = createBrowserRouter([
 			{
 				path: 'user',
 				element: <UserProfilePage />,
+			},
+			{
+				path: 'feed',
+				element: <FeedPage />,
 			},
 		],
 	},
@@ -54,7 +61,23 @@ const App = () => {
 
 	return (
 		<>
-			<RouterProvider router={router} />
+			{loginMutation.isLoading ? (
+				<div
+					style={{
+						width: '100vw',
+						height: '100vh',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						fontSize: '40px',
+						color: '#fff',
+					}}
+				>
+					<FontAwesomeIcon icon={faSpinner} spin />
+				</div>
+			) : (
+				<RouterProvider router={router} />
+			)}
 		</>
 	)
 }
