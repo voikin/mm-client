@@ -3,70 +3,76 @@ import styles from './NavBar.module.css'
 import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
-import { useMutation } from 'react-query'
+import { useQuery } from 'react-query'
 import AuthService from '../../services/AuthService'
 import logo from './../../assets/logo.svg'
+import {
+	AppBar,
+	Avatar,
+	Button,
+	IconButton,
+	Toolbar,
+	Typography,
+} from '@mui/material'
+import { House } from '@mui/icons-material'
 
 const NavBar = () => {
 	const { isAuth, logout, user } = useAuthStore()
-	const { mutate: logoutMutate } = useMutation(AuthService.logout, {
+	const logoutQuery = useQuery('logout', AuthService.logout, {
 		onSuccess: () => logout(),
+		enabled: false,
 	})
 	return (
-		<div className={styles.layout}>
-			<nav className={styles.navbar}>
-				<div className={styles.logo_block}>
-					<img src={logo} alt='logo' className={styles.logo_img} />
-					<p className={styles.logo_text}>mealmapper</p>
-					{isAuth && <p className={styles.logo_text}>{user.email}</p>}
-				</div>
-				<div className={styles.navbar_navigation}>
-					<Link className={styles.navbar__home} to={isAuth ? '/feed' : '/'}>
-						<FontAwesomeIcon icon={faHouse} />
-					</Link>
-					{!isAuth ? (
-						<>
-							<Link
-								to={'/login'}
-								className={
-									styles.navbar__item + ' ' + styles.navbar__item__login
-								}
-							>
-								Войти
-							</Link>
-							<Link
-								to={'/signup'}
-								className={
-									styles.navbar__item + ' ' + styles.navbar__item__login
-								}
-							>
-								Зарегистрироваться
-							</Link>
-						</>
-					) : (
-						<>
-							<Link
-								to={'/user'}
-								className={
-									styles.navbar__item + ' ' + styles.navbar__item__login
-								}
-							>
-								Личный кабинет
-							</Link>
-							<Link
-								to={'/'}
-								className={
-									styles.navbar__item + ' ' + styles.navbar__item__login
-								}
-								onClick={() => logoutMutate()}
-							>
-								Выйти
-							</Link>
-						</>
-					)}
-				</div>
-			</nav>
-		</div>
+		<AppBar position='fixed'>
+			<Toolbar>
+				<Avatar src={logo} alt='logo' />
+				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }} pl='8px'>
+					mealmapper
+				</Typography>
+				{isAuth && (
+					<Typography
+						variant='body1'
+						component='div'
+						sx={{ userSelect: 'none' }}
+					>
+						{user.email}
+					</Typography>
+				)}
+				{isAuth ? (
+					<>
+						<Button component={Link} to='/feed' color='inherit' variant='text'>
+							Лента
+						</Button>
+						<Button component={Link} to='/user' color='inherit' variant='text'>
+							Личный кабинет
+						</Button>
+						<Button
+							component={Link}
+							to='/'
+							color='inherit'
+							variant='text'
+							onClick={() => logoutQuery.refetch()}
+						>
+							Выйти
+						</Button>
+					</>
+				) : (
+					<>
+						<Button component={Link} to='/login' color='inherit' variant='text'>
+							Войти
+						</Button>
+						<Button
+							component={Link}
+							to='/signup'
+							color='inherit'
+							variant='text'
+						>
+							Зарегистрироваться
+						</Button>
+					</>
+				)}
+			</Toolbar>
+		</AppBar>
 	)
 }
 

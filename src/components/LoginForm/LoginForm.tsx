@@ -4,21 +4,40 @@ import {
 	SubmitHandler,
 	useForm,
 } from 'react-hook-form'
-import styles from './LoginForm.module.css'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ILoginForm } from './LoginForm.interface'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useMutation } from 'react-query'
 import AuthService from '../../services/AuthService'
 import { AuthResponse } from '../../models/response/AuthResponse'
 import { useAuthStore } from '../../stores/authStore'
+import {
+	Alert,
+	Box,
+	Button,
+	CircularProgress,
+	Grid,
+	Paper,
+	TextField,
+	Typography,
+	styled,
+} from '@mui/material'
+import { Link } from 'react-router-dom'
+
+const StyledLink = styled(Link)`
+	color: inherit;
+
+	&:hover {
+		color: inherit;
+	}
+`
 
 export default function LoginForm() {
 	const { login, isAuth } = useAuthStore()
+	const [errorMessage, setErrorMessage] = useState('')
 
 	const loginMutation = useMutation(AuthService.login, {
 		onSuccess: (data: AuthResponse) => login(data),
+		onError: (e: Error) => setErrorMessage('Ошибка входа: ' + e.message),
 	})
 
 	const {
@@ -40,60 +59,87 @@ export default function LoginForm() {
 
 	if (isAuth)
 		return (
-			<>
-				<div className={styles['login-card']}>
-					<div className={styles['login-card__message']}>
-						Вход выполнен успешно!
-					</div>
-				</div>
-			</>
+			<Alert severity='success' sx={{ marginTop: '16px' }}>
+				Вход выполнен успешно!
+			</Alert>
 		)
 
 	return (
-		<div className={styles['login-card']}>
-			<form
-				onSubmit={handleSubmit(submitHandler, errorHandler)}
-				className={styles['login-card__form']}
-			>
-				<div className={styles['login-card__item']}>
-					<p>Email</p>
-					<input
-						type='text'
-						className={
-							styles['login-card__input'] +
-							' ' +
-							(errors.email && styles['login-card__input__invalid'])
-						}
-						placeholder='Введите email'
-						{...register('email', { required: true })}
+		<Paper
+			sx={{
+				padding: '24px 32px',
+				mt: '64px',
+				borderRadius: '1rem',
+				width: '350px',
+			}}
+			elevation={2}
+		>
+			<form onSubmit={handleSubmit(submitHandler, errorHandler)}>
+				{errorMessage && (
+					<Alert severity='error' sx={{ marginBottom: '16px' }}>
+						{errorMessage}
+					</Alert>
+				)}
+				<Box display='flex' flexDirection='column' alignItems='center'>
+					<Typography component='h1' variant='h5' marginTop='normal'>
+						Вход
+					</Typography>
+					<TextField
+						margin='normal'
+						helperText={errors.email ? errors?.email?.message : ''}
+						error={!!errors?.email}
+						label='Электронный адрес'
+						autoComplete='login-email'
+						fullWidth
+						autoFocus
+						{...register('email', {
+							required: 'Это поле обязательное',
+							pattern: {
+								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+								message: 'Некорректно указана почта',
+							},
+						})}
 					/>
-				</div>
-				<div className={styles['login-card__item']}>
-					<p>Password</p>
-					<input
-						type='text'
-						className={
-							styles['login-card__input'] +
-							' ' +
-							(errors.password && styles['login-card__input__invalid'])
-						}
-						placeholder='Введите пароль'
-						{...register('password', { required: true })}
+					<TextField
+						margin='normal'
+						fullWidth
+						label='Пароль'
+						type='password'
+						autoComplete='login-current-password'
+						{...register('password', {
+							required: 'Это поле обязательное',
+						})}
 					/>
-				</div>
-				<button
-					className={
-						styles['login-card__item'] + ' ' + styles['login-card__button']
-					}
-					disabled={loginMutation.isLoading}
-				>
-					{loginMutation.isLoading ? (
-						<FontAwesomeIcon icon={faSpinner} spin />
-					) : (
-						'Войти'
-					)}
-				</button>
+					<Button
+						variant='contained'
+						disabled={loginMutation.isLoading}
+						disableElevation
+						type='submit'
+						fullWidth
+						sx={{
+							marginTop: '16px',
+						}}
+					>
+						{loginMutation.isLoading ? (
+							<CircularProgress size={24} />
+						) : (
+							<Typography>Войти</Typography>
+						)}
+					</Button>
+					<Grid container marginTop='16px'>
+						<Grid item xs>
+							<StyledLink to='#'>
+								<Typography>Забыли пароль?</Typography>
+							</StyledLink>
+						</Grid>
+						<Grid item>
+							<StyledLink to='/signup'>
+								<Typography>Зарегистрироваться</Typography>
+							</StyledLink>
+						</Grid>
+					</Grid>
+				</Box>
 			</form>
-		</div>
+		</Paper>
 	)
 }
