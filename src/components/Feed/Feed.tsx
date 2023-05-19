@@ -1,22 +1,29 @@
 import { useQuery } from 'react-query'
 import RationService from '../../services/RationService'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { Alert, Box, CircularProgress } from '@mui/material'
+import { useAuthStore } from '../../stores/authStore'
 
 export default function Feed() {
+	const { isAuth } = useAuthStore()
 	const fetchFeedQuery = useQuery('feed', RationService.fetchFeed, {
 		onSuccess: (data) => {
 			console.log(data)
 		},
 	})
+	if (!isAuth)
+		return (
+			<Alert severity='error' sx={{ marginTop: '16px' }}>
+				Вы не авторизированны
+			</Alert>
+		)
 	return (
 		<>
 			{fetchFeedQuery.isLoading ? (
-				<FontAwesomeIcon style={{ color: '#fff' }} icon={faSpinner} spin />
+				<Box width='100vw' display='flex' justifyContent='center' mt='16px'>
+					<CircularProgress size={48} />
+				</Box>
 			) : (
-				<pre style={{ color: '#fff' }}>
-					{JSON.stringify(fetchFeedQuery.data, null, 4)}
-				</pre>
+				<pre>{JSON.stringify(fetchFeedQuery.data, null, 4)}</pre>
 			)}
 		</>
 	)

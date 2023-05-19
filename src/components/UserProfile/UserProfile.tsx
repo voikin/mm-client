@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useQuery } from 'react-query'
 import UserService from '../../services/UserService'
-import { useEffect } from 'react'
+import { Alert, Box, CircularProgress } from '@mui/material'
+import { useAuthStore } from '../../stores/authStore'
 
 export default function UserProfile() {
+	const { isAuth } = useAuthStore()
 	const fetchUserDataQuery = useQuery('userData', UserService.fetchUserData, {
 		onSuccess: (data) => {
 			console.log(data)
@@ -15,14 +15,19 @@ export default function UserProfile() {
 		staleTime: Infinity,
 	})
 
-	useEffect(() => {
-		fetchUserDataQuery.refetch()
-	}, [])
+	if (!isAuth)
+		return (
+			<Alert severity='error' sx={{ marginTop: '16px' }}>
+				Вы не авторизированны
+			</Alert>
+		)
 
 	return (
-		<pre style={{ color: 'white' }}>
+		<pre>
 			{fetchUserDataQuery.isLoading ? (
-				<FontAwesomeIcon icon={faSpinner} spin />
+				<Box width='100vw' display='flex' justifyContent='center' mt='16px'>
+					<CircularProgress size={48} />
+				</Box>
 			) : (
 				JSON.stringify(fetchUserDataQuery.data, null, 4)
 			)}
