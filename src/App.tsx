@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import './App.module.css'
+// import './App.module.css'
 import LoginPage from './pages/LoginPage/LoginPage'
 import HomePage from './pages/HomePage/HomePage'
 import SignupPage from './pages/SignupPage/SignupPage'
@@ -12,6 +12,7 @@ import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
 import FeedPage from './pages/FeedPage/FeedPage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { Box, CircularProgress, Paper } from '@mui/material'
 
 const router = createBrowserRouter([
 	{
@@ -62,19 +63,15 @@ const App = () => {
 	return (
 		<>
 			{loginMutation.isLoading ? (
-				<div
-					style={{
-						width: '100vw',
-						height: '100vh',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						fontSize: '40px',
-						color: '#fff',
-					}}
+				<Box
+					width='100vw'
+					height='100vh'
+					display='flex'
+					justifyContent='center'
+					alignItems='center'
 				>
-					<FontAwesomeIcon icon={faSpinner} spin />
-				</div>
+					<CircularProgress size={64} />
+				</Box>
 			) : (
 				<RouterProvider router={router} />
 			)}
