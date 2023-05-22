@@ -10,9 +10,7 @@ import { useAuthStore } from './stores/authStore'
 import AuthService from './services/AuthService'
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
 import FeedPage from './pages/FeedPage/FeedPage'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { Box, CircularProgress, Paper } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 
 const router = createBrowserRouter([
 	{

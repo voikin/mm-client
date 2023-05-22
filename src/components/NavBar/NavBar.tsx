@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import styles from './NavBar.module.css'
-import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useQuery } from 'react-query'
@@ -10,11 +7,9 @@ import {
 	AppBar,
 	Avatar,
 	Button,
-	IconButton,
 	Toolbar,
 	Typography,
 } from '@mui/material'
-import { House } from '@mui/icons-material'
 
 const NavBar = () => {
 	const { isAuth, logout, user } = useAuthStore()

@@ -6,8 +6,6 @@ import {
 } from 'react-hook-form'
 import styles from './SignupForm.module.css'
 import { useEffect, useRef, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { ISignupForm } from './SignupForm.interface'
 import { useMutation } from 'react-query'
 import AuthService from '../../services/AuthService'
