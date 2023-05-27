@@ -1,0 +1,43 @@
+.form_card {
+	@apply w-[24rem] mx-auto p-6 bg-white rounded-md shadow-md mt-2;
+
+	.form_card__alert__success {
+		@apply bg-green-100 border-l-4 border-green-500 text-green-700 p-4;
+	}
+
+	.form_card__alert__error {
+		@apply bg-red-100 border-l-2 border-red-500 rounded-sm text-red-700 p-4;
+	}
+
+	.form_card__inputs {
+		@apply flex flex-col items-center;
+
+		.form_card__heading {
+			@apply font-semibold text-2xl mt-2;
+		}
+
+		.form_card__input_block {
+			@apply w-full mt-2;
+
+			label {
+				@apply block text-slate-700;
+			}
+
+			input {
+				@apply block mx-auto w-full border rounded-md px-3 py-2 outline-primary;
+			}
+
+			.form_card__input__error {
+				@apply border-red-500;
+			}
+
+			.form_card__input__alert {
+				@apply text-red-500 mt-1;
+			}
+		}
+
+		.form_card__button {
+			@apply w-full bg-primary text-white font-bold py-2 px-4 rounded-md disabled:opacity-50 mt-4 flex justify-center items-center;
+		}
+	}
+}

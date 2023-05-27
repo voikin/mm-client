@@ -1,0 +1,15 @@
+.recipe {
+	@apply bg-slate-300 px-4 py-2 rounded w-1/3 shadow-sm flex flex-col;
+
+	.head {
+		@apply flex flex-col items-center;
+	}
+
+	.item {
+		@apply border border-slate-400 rounded inline-block p-2 shadow-sm mt-4;
+	}
+
+	img {
+		@apply max-w-full rounded shadow-sm;
+	}
+}
