@@ -10,7 +10,7 @@ import { useAuthStore } from './stores/authStore'
 import AuthService from './services/AuthService'
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage'
 import FeedPage from './pages/FeedPage/FeedPage'
-import { Box, CircularProgress } from '@mui/material'
+import { HiArrowPath } from 'react-icons/hi2'
 
 const router = createBrowserRouter([
 	{
@@ -55,21 +55,16 @@ const App = () => {
 
 	useEffect(() => {
 		const accessToken = localStorage.getItem('accessToken')
+		console.log(accessToken)
 		if (accessToken) loginMutation.mutate()
 	}, [])
 
 	return (
 		<>
 			{loginMutation.isLoading ? (
-				<Box
-					width='100vw'
-					height='100vh'
-					display='flex'
-					justifyContent='center'
-					alignItems='center'
-				>
-					<CircularProgress size={64} />
-				</Box>
+				<div className='w-screen h-screen grid place-content-center'>
+					<HiArrowPath className='animate-spin w-20 h-20 text-primary' />
+				</div>
 			) : (
 				<RouterProvider router={router} />
 			)}

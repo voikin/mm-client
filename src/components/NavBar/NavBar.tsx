@@ -3,13 +3,7 @@ import { useAuthStore } from '../../stores/authStore'
 import { useQuery } from 'react-query'
 import AuthService from '../../services/AuthService'
 import logo from './../../assets/logo.svg'
-import {
-	AppBar,
-	Avatar,
-	Button,
-	Toolbar,
-	Typography,
-} from '@mui/material'
+import styles from './NavBar.module.scss'
 
 const NavBar = () => {
 	const { isAuth, logout, user } = useAuthStore()
@@ -18,56 +12,41 @@ const NavBar = () => {
 		enabled: false,
 	})
 	return (
-		<AppBar position='fixed'>
-			<Toolbar>
-				<Avatar src={logo} alt='logo' />
-				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }} pl='8px'>
-					mealmapper
-				</Typography>
-				{isAuth && (
-					<Typography
-						variant='body1'
-						component='div'
-						sx={{ userSelect: 'none' }}
-					>
-						{user.email}
-					</Typography>
-				)}
+		<header className={styles.header}>
+			<div className={styles.header__logo_block}>
+				<img src={logo} alt='logo' className={styles.header__logo_img} />
+				<p>mealmapper</p>
+			</div>
+			<div className={styles.header__nav}>
+				{isAuth && <p>{user.email}</p>}
 				{isAuth ? (
 					<>
-						<Button component={Link} to='/feed' color='inherit' variant='text'>
+						<Link to='/feed' className={styles.header__item}>
 							Лента
-						</Button>
-						<Button component={Link} to='/user' color='inherit' variant='text'>
+						</Link>
+						<Link to='/user' className={styles.header__item}>
 							Личный кабинет
-						</Button>
-						<Button
-							component={Link}
+						</Link>
+						<Link
 							to='/'
-							color='inherit'
-							variant='text'
+							className={styles.header__item}
 							onClick={() => logoutQuery.refetch()}
 						>
 							Выйти
-						</Button>
+						</Link>
 					</>
 				) : (
 					<>
-						<Button component={Link} to='/login' color='inherit' variant='text'>
+						<Link to='/login' className={styles.header__item}>
 							Войти
-						</Button>
-						<Button
-							component={Link}
-							to='/signup'
-							color='inherit'
-							variant='text'
-						>
+						</Link>
+						<Link to='/signup' className={styles.header__item}>
 							Зарегистрироваться
-						</Button>
+						</Link>
 					</>
 				)}
-			</Toolbar>
-		</AppBar>
+			</div>
+		</header>
 	)
 }
 

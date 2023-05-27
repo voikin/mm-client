@@ -1,7 +1,8 @@
 import { useQuery } from 'react-query'
 import UserService from '../../services/UserService'
-import { Alert, Box, CircularProgress } from '@mui/material'
+import styles from './UserProfile.module.scss'
 import { useAuthStore } from '../../stores/authStore'
+import { HiArrowPath } from 'react-icons/hi2'
 
 export default function UserProfile() {
 	const { isAuth } = useAuthStore()
@@ -16,18 +17,14 @@ export default function UserProfile() {
 	})
 
 	if (!isAuth)
-		return (
-			<Alert severity='error' sx={{ marginTop: '16px' }}>
-				Вы не авторизированны
-			</Alert>
-		)
+		return <div className={styles.auth_error}>Вы не авторизированны</div>
 
 	return (
 		<pre>
 			{fetchUserDataQuery.isLoading ? (
-				<Box width='100vw' display='flex' justifyContent='center' mt='16px'>
-					<CircularProgress size={48} />
-				</Box>
+				<div className='w-full h-full grid place-content-center'>
+					<HiArrowPath className='animate-spin w-20 h-20 text-primary' />
+				</div>
 			) : (
 				JSON.stringify(fetchUserDataQuery.data, null, 4)
 			)}

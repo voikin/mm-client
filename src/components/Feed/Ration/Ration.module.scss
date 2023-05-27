@@ -1,0 +1,7 @@
+.ration {
+    @apply px-4 py-2 bg-slate-100 rounded-md shadow-sm flex flex-wrap justify-center gap-4 mx-auto cursor-pointer hover:opacity-90;
+
+    &:not(:first-child) {
+        @apply mt-10;
+    }
+}

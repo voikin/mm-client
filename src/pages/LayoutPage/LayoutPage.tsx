@@ -1,14 +1,13 @@
 import { Outlet } from 'react-router-dom'
 import NavBar from '../../components/NavBar/NavBar'
-import { Container } from '@mui/material'
+import styles from './LayoutPage.module.scss'
 
 const LayoutPage = () => {
 	return (
 		<>
 			<NavBar />
-			<Container sx={{ marginTop: '64px' }}>
-				<Outlet />
-			</Container>
+			<div className={styles.outlet}></div>
+			<Outlet />
 		</>
 	)
 }

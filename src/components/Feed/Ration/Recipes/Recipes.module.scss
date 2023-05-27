@@ -1,0 +1,7 @@
+.recipes {
+	@apply flex flex-col items-center px-2 py-1 bg-slate-200 rounded mt-4;
+
+    .row {
+        @apply flex flex-row gap-4 mt-1
+    }
+}

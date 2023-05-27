@@ -6,7 +6,6 @@ import { LoginRequest, SignupRequest } from '../models/requests/AuthRequests'
 export default class AuthService {
 	static async login(credentials: LoginRequest): Promise<AuthResponse> {
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 2000))
 			const response = await $api.post<AuthResponse>('/auth/login', credentials)
 			console.log(response)
 			return response.data
@@ -17,7 +16,6 @@ export default class AuthService {
 
 	static async signup(credentials: SignupRequest): Promise<any> {
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 2000))
 			const response = await $api.post('/auth/signup', credentials)
 			if (response) {
 				return response

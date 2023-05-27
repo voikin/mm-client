@@ -10,26 +10,9 @@ import { useMutation } from 'react-query'
 import AuthService from '../../services/AuthService'
 import { AuthResponse } from '../../models/response/AuthResponse'
 import { useAuthStore } from '../../stores/authStore'
-import {
-	Alert,
-	Box,
-	Button,
-	CircularProgress,
-	Grid,
-	Paper,
-	TextField,
-	Typography,
-	styled,
-} from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
-
-const StyledLink = styled(Link)`
-	color: inherit;
-
-	&:hover {
-		color: inherit;
-	}
-`
+import { useNavigate } from 'react-router-dom'
+import styles from './LoginForm.module.scss'
+import { HiArrowPath } from 'react-icons/hi2'
 
 export default function LoginForm() {
 	const { login, isAuth } = useAuthStore()
@@ -63,39 +46,27 @@ export default function LoginForm() {
 
 	if (isAuth)
 		return (
-			<Alert severity='success' sx={{ marginTop: '16px' }}>
+			<div className={styles.form_card__alert__success}>
 				Вход выполнен успешно!
-			</Alert>
+			</div>
 		)
 
 	return (
-		<Paper
-			sx={{
-				padding: '24px 32px',
-				mt: '64px',
-				borderRadius: '1rem',
-				width: '350px',
-			}}
-			elevation={2}
+		<form
+			className={styles.form_card}
+			onSubmit={handleSubmit(submitHandler, errorHandler)}
 		>
-			<form onSubmit={handleSubmit(submitHandler, errorHandler)}>
-				{errorMessage && (
-					<Alert severity='error' sx={{ marginBottom: '16px' }}>
-						{errorMessage}
-					</Alert>
-				)}
-				<Box display='flex' flexDirection='column' alignItems='center'>
-					<Typography component='h1' variant='h5' marginTop='normal'>
-						Вход
-					</Typography>
-					<TextField
-						margin='normal'
-						helperText={errors.email ? errors?.email?.message : ''}
-						error={!!errors?.email}
-						label='Электронный адрес'
-						autoComplete='login-email'
-						fullWidth
-						autoFocus
+			{errorMessage && (
+				<div className={styles.form_card__alert__error}>{errorMessage}</div>
+			)}
+			<div className={styles.form_card__inputs}>
+				<div className={styles.form_card__heading}>Вход</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='email'>Электронный адрес</label>
+					<input
+						id='email'
+						type='text'
+						className={errors?.email && styles.form_card__input__error}
 						{...register('email', {
 							required: 'Это поле обязательное',
 							pattern: {
@@ -103,47 +74,41 @@ export default function LoginForm() {
 								message: 'Некорректно указана почта',
 							},
 						})}
-					/>
-					<TextField
-						margin='normal'
-						fullWidth
-						label='Пароль'
+					></input>
+					{errors.email && (
+						<div className={styles.form_card__input__alert}>
+							{errors?.email?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='password'>Пароль</label>
+					<input
+						id='password'
 						type='password'
-						autoComplete='login-current-password'
+						className={errors?.password && styles.form_card__input__error}
 						{...register('password', {
-							required: 'Это поле обязательное',
+							required: 'Это обязательное поле',
 						})}
-					/>
-					<Button
-						variant='contained'
-						disabled={loginMutation.isLoading}
-						disableElevation
-						type='submit'
-						fullWidth
-						sx={{
-							marginTop: '16px',
-						}}
-					>
-						{loginMutation.isLoading ? (
-							<CircularProgress size={24} />
-						) : (
-							<Typography>Войти</Typography>
-						)}
-					</Button>
-					<Grid container marginTop='16px'>
-						<Grid item xs>
-							<StyledLink to='#'>
-								<Typography>Забыли пароль?</Typography>
-							</StyledLink>
-						</Grid>
-						<Grid item>
-							<StyledLink to='/signup'>
-								<Typography>Зарегистрироваться</Typography>
-							</StyledLink>
-						</Grid>
-					</Grid>
-				</Box>
-			</form>
-		</Paper>
+					></input>
+					{errors.password && (
+						<div className={styles.form_card__input__alert}>
+							{errors.password?.message}
+						</div>
+					)}
+				</div>
+				<button
+					type='submit'
+					disabled={loginMutation.isLoading}
+					className={styles.form_card__button}
+				>
+					{loginMutation.isLoading ? (
+						<HiArrowPath className='animate-spin' />
+					) : (
+						<p>Отправить</p>
+					)}
+				</button>
+			</div>
+		</form>
 	)
 }

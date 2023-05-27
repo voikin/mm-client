@@ -1,0 +1,24 @@
+.overlay {
+	@apply w-screen bg-black absolute top-10 flex justify-center items-center;
+
+	height: calc(100vh - 2.5rem);
+
+	background-color: rgba(0, 0, 0, 0.1);
+
+	.modal_layout {
+
+		@apply w-5/6 h-5/6 mx-auto my-auto bg-slate-100 rounded opacity-100 py-2 shadow-inner;
+
+		.modal {
+			@apply w-full h-full rounded overflow-scroll relative;
+
+			.nav {
+				@apply fixed flex justify-end top-2 right-2;
+			}
+
+			.recipes {
+				@apply p-6;
+			}
+		}
+	}
+}

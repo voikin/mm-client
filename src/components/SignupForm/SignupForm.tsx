@@ -4,21 +4,13 @@ import {
 	SubmitHandler,
 	useForm,
 } from 'react-hook-form'
-import styles from './SignupForm.module.css'
+import { HiArrowPath } from 'react-icons/hi2'
 import { useEffect, useRef, useState } from 'react'
 import { ISignupForm } from './SignupForm.interface'
 import { useMutation } from 'react-query'
 import AuthService from '../../services/AuthService'
 import { useAuthStore } from '../../stores/authStore'
-import {
-	Paper,
-	Box,
-	TextField,
-	CircularProgress,
-	Typography,
-	Button,
-	Alert,
-} from '@mui/material'
+import styles from './SignupForm.module.scss'
 import { useNavigate } from 'react-router-dom'
 
 export default function SignupForm() {
@@ -83,49 +75,33 @@ export default function SignupForm() {
 
 	if (isAuth)
 		return (
-			<>
-				<div className={styles['login-card']}>
-					<div className={styles['login-card__message']}>
-						Вход выполнен успешно!
-					</div>
-				</div>
-			</>
+			<div className={styles.form_card__alert__success}>
+				Вход выполнен успешно!
+			</div>
 		)
 
 	return (
-		<Paper
-			sx={{
-				padding: '24px 32px',
-				mt: '64px',
-				borderRadius: '1rem',
-				width: '350px',
-			}}
-			elevation={2}
+		<form
+			className={styles.form_card}
+			onSubmit={handleSubmit(submitHandler, errorHandler)}
 		>
-			<form onSubmit={handleSubmit(submitHandler, errorHandler)}>
-				{isMailSended && (
-					<Alert severity='success' sx={{ marginTop: '16px' }}>
-						Пожалуйста, подтвердите аккаунт в электронном письме. После этого
-						авторизуйтесь на сервисе
-					</Alert>
-				)}
-				{errorMessage && (
-					<Alert severity='error' sx={{ marginBottom: '16px' }}>
-						{errorMessage}
-					</Alert>
-				)}
-				<Box display='flex' flexDirection='column' alignItems='center'>
-					<Typography component='h1' variant='h5' marginTop='normal'>
-						Регистрация
-					</Typography>
-					<TextField
-						margin='normal'
-						helperText={errors.email ? errors?.email?.message : ''}
-						error={!!errors?.email}
-						label='Электронный адрес'
-						autoComplete='signup-email'
-						fullWidth
-						autoFocus
+			{isMailSended && (
+				<div className={styles.form_card__alert__success}>
+					Пожалуйста, подтвердите аккаунт в электронном письме. После этого
+					авторизуйтесь на сервисе
+				</div>
+			)}
+			{errorMessage && (
+				<div className={styles.form_card__alert__error}>{errorMessage}</div>
+			)}
+			<div className={styles.form_card__inputs}>
+				<h1 className={styles.form_card__heading}>Регистрация</h1>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='email'>Электронный адрес</label>
+					<input
+						id='email'
+						type='text'
+						className={errors?.email && styles.form_card__input__error}
 						{...register('email', {
 							required: 'Это поле обязательное',
 							pattern: {
@@ -133,13 +109,19 @@ export default function SignupForm() {
 								message: 'Некорректно указана почта',
 							},
 						})}
-					/>
-					<TextField
-						margin='normal'
-						fullWidth
-						label='Пароль'
+					></input>
+					{errors.email && (
+						<div className={styles.form_card__input__alert}>
+							{errors?.email?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='password'>Пароль</label>
+					<input
+						id='password'
 						type='password'
-						autoComplete='signup-current-password'
+						className={errors?.password && styles.form_card__input__error}
 						{...register('password', {
 							required: 'Это обязательное поле',
 							minLength: {
@@ -147,37 +129,45 @@ export default function SignupForm() {
 								message: 'Пароль должен состоять минимум из 6 символов',
 							},
 						})}
-					/>
-					<TextField
-						margin='normal'
-						fullWidth
-						label='Подтвердите пароль'
+					></input>
+					{errors.password && (
+						<div className={styles.form_card__input__alert}>
+							{errors.password?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='confirmPassword'>Подтвердите пароль</label>
+					<input
+						id='confirmPassword'
 						type='password'
-						autoComplete='sign-up-confirm-password'
+						className={
+							errors?.confirmPassword && styles.form_card__input__error
+						}
 						{...register('confirmPassword', {
 							required: 'Это обязательное поле',
 							validate: (value) =>
 								value === password.current || 'Пароли не совпадают',
 						})}
-					/>
-					<Button
-						variant='contained'
-						disabled={signupMutation.isLoading}
-						disableElevation
-						type='submit'
-						fullWidth
-						sx={{
-							marginTop: '16px',
-						}}
-					>
-						{signupMutation.isLoading ? (
-							<CircularProgress size={24} />
-						) : (
-							<Typography>Отправить</Typography>
-						)}
-					</Button>
-				</Box>
-			</form>
-		</Paper>
+					></input>
+					{errors.confirmPassword && (
+						<div className={styles.form_card__input__alert}>
+							{errors.confirmPassword?.message}
+						</div>
+					)}
+				</div>
+				<button
+					type='submit'
+					disabled={signupMutation.isLoading}
+					className={styles.form_card__button}
+				>
+					{signupMutation.isLoading ? (
+						<HiArrowPath className='animate-spin' />
+					) : (
+						<p>Отправить</p>
+					)}
+				</button>
+			</div>
+		</form>
 	)
 }
