@@ -10,7 +10,9 @@ export default function ModalRecipe(props: ModalRecipeProps) {
 		<div className={styles.recipe}>
 			<div className={styles.head}>
 				<h2>{props.recipe.name}</h2>
-				<img src={props.recipe.photo} />
+				<a href={props.recipe.url} target='_blank'>
+					<img src={props.recipe.img} />
+				</a>
 			</div>
 			<div className={styles.item}>
 				<h3>Калории: {props.recipe.calories} кл</h3>
@@ -21,7 +23,7 @@ export default function ModalRecipe(props: ModalRecipeProps) {
 					{props.recipe.products.map((product) => (
 						<li>
 							<h4>
-								{product[0]}: {product[1]} гр
+								{product.name}: {product.weight} гр
 							</h4>
 						</li>
 					))}

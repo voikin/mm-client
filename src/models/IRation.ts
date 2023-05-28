@@ -7,13 +7,14 @@ export interface IRecipe {
 	name: string
 	weight: number
 	calories: number
-	photo: string
+	img: string
+	url: string
 	products: IIngredient[]
 }
 
 export interface IRation {
 	id?: number
-	date?: Date
+	date?: string
 	monday: IRecipe[]
 	tuesday: IRecipe[]
 	wednesday: IRecipe[]

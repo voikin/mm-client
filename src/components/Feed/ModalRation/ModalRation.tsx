@@ -2,6 +2,7 @@ import { HiOutlineXMark } from 'react-icons/hi2'
 import { IRation } from '../../../models/IRation'
 import styles from './ModalRation.module.scss'
 import ModalRecipes from './ModalRecipes/ModalRecipes'
+import { useEffect } from 'react'
 
 interface ModalRationProps {
 	onClose: () => void
@@ -9,6 +10,10 @@ interface ModalRationProps {
 }
 
 export default function ModalRation(props: ModalRationProps) {
+	useEffect(() => {
+		document.body.style.overflow = 'hidden';
+		return () => {document.body.style.overflow = 'unset'};
+	}, [])
 	return (
 		<div className={styles.overlay} onClick={props.onClose}>
 			<div
