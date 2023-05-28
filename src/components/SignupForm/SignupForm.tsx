@@ -45,6 +45,7 @@ export default function SignupForm() {
 	const submitHandler: SubmitHandler<ISignupForm> = async (
 		data: ISignupForm
 	) => {
+		console.log(data);
 		setErrorMessage('')
 		signupMutation.mutate(data)
 	}
@@ -113,6 +114,86 @@ export default function SignupForm() {
 					{errors.email && (
 						<div className={styles.form_card__input__alert}>
 							{errors?.email?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='age'>Возраст</label>
+					<input
+						id='age'
+						type='number'
+						className={errors?.age && styles.form_card__input__error}
+						{...register('age', {
+							required: 'Это обязательное поле',
+							max: {
+								value: 150,
+								message: 'Нам кажется кто-то врет',
+							},
+						})}
+					></input>
+					{errors.age && (
+						<div className={styles.form_card__input__alert}>
+							{errors.age?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='weight'>Вес</label>
+					<input
+						id='weight'
+						type='number'
+						className={errors?.weight && styles.form_card__input__error}
+						{...register('weight', {
+							required: 'Это обязательное поле',
+						})}
+					></input>
+					{errors.weight && (
+						<div className={styles.form_card__input__alert}>
+							{errors.weight?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<label htmlFor='height'>Рост</label>
+					<input
+						id='height'
+						type='number'
+						className={errors?.height && styles.form_card__input__error}
+						{...register('height', {
+							required: 'Это обязательное поле',
+						})}
+					></input>
+					{errors.height && (
+						<div className={styles.form_card__input__alert}>
+							{errors.height?.message}
+						</div>
+					)}
+				</div>
+				<div className={styles.form_card__input_block}>
+					<div className={styles.form_card__gender_block}>
+						<label>Пол:</label>
+						<div>
+							<input
+								type='radio'
+								id='gender-male'
+								value='male'
+								{...register('sex')}
+							/>
+							<label htmlFor='gender-male'>Мужской</label>
+						</div>
+						<div>
+							<input
+								type='radio'
+								id='gender-female'
+								value='female'
+								{...register('sex')}
+							/>
+							<label htmlFor='gender-female'>Женский</label>
+						</div>
+					</div>
+					{errors.sex && (
+						<div className={styles.form_card__input__alert}>
+							{errors.sex?.message}
 						</div>
 					)}
 				</div>
