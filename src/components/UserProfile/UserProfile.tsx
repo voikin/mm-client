@@ -10,7 +10,7 @@ import ModalRation from '../Feed/ModalRation/ModalRation'
 
 export default function UserProfile() {
 	const { isAuth } = useAuthStore()
-	const fetchUserDataQuery = useQuery('userData', UserService.fetchUserData, {
+	const fetchUserInfoQuery = useQuery('userData', UserService.fetchUserData, {
 		onSuccess: (data) => {
 			console.log(data)
 		},
@@ -30,38 +30,13 @@ export default function UserProfile() {
 		setSelectedRation(null)
 	}
 
-	const triedRations = rationsMock
-	triedRations[0].id = 1
-	triedRations[1].id = 1
-	triedRations[0].date = new Date()
-	triedRations[1].date = new Date()
-
-	const userInfo = {} as UserInfo
-	userInfo.age = 20
-	userInfo.height = 186
-	userInfo.weight = 75
-	userInfo.triedRations = triedRations
-	userInfo.preferences = [
-		'помидоры',
-		'молоко',
-		'курица',
-		'помидоры',
-		'молоко',
-		'курица',
-		'помидоры',
-		'молоко',
-		'курица',
-		'помидоры',
-		'молоко',
-		'курица',
-	]
 
 	if (!isAuth)
 		return <div className={styles.auth_error}>Вы не авторизированны</div>
 
 	return (
 		<>
-			{fetchUserDataQuery.isLoading ? (
+			{fetchUserInfoQuery.isLoading ? (
 				<div className='w-full h-full grid place-content-center'>
 					<HiArrowPath className='animate-spin w-20 h-20 text-primary' />
 				</div>
@@ -70,15 +45,15 @@ export default function UserProfile() {
 					<div className={styles.userInfo}>
 						<HiUser className={styles.avatar} />
 						<div className={styles.parameters}>
-							<p>Возраст: {userInfo.age}</p>
-							<p>Вес: {userInfo.weight}</p>
-							<p>Рост: {userInfo.height}</p>
+							<p>Возраст: {fetchUserInfoQuery.data.age}</p>
+							<p>Вес: {fetchUserInfoQuery.data.weight}</p>
+							<p>Рост: {fetchUserInfoQuery.data.height}</p>
 						</div>
 					</div>
 					<div className={styles.preferences_layout}>
 						<h2>Избранные предпочтения</h2>
 						<div className={styles.preferences}>
-							{userInfo.preferences.map((preference) => (
+							{fetchUserInfoQuery.data.preferences.map((preference) => (
 								<p className={styles.preference}>{preference}</p>
 							))}
 						</div>
@@ -86,12 +61,12 @@ export default function UserProfile() {
 					<div className={styles.preferences_layout}>
 						<h2>Попробованные рационы</h2>
 						<div className={styles.preferences}>
-							{userInfo.triedRations.map((ration) => (
+							{fetchUserInfoQuery.data.triedRations.map((ration) => (
 								<p
 									className={styles.preference}
 									onClick={() => openModal(ration)}
 								>
-									{ration.date?.toDateString()}
+									{ration.date}
 								</p>
 							))}
 						</div>

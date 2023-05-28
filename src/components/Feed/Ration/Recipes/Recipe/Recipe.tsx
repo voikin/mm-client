@@ -8,7 +8,7 @@ interface RecipeProps {
 export default function Recipe(props: RecipeProps) {
 	return (
 		<div className={styles.recipe}>
-			<img src={props.recipe.photo} />
+			<img src={props.recipe.img} />
 		</div>
 	)
 }

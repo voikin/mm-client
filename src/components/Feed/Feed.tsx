@@ -4,7 +4,7 @@ import styles from './Feed.module.scss'
 import { useAuthStore } from '../../stores/authStore'
 import { HiArrowPath } from 'react-icons/hi2'
 import Ration from './Ration/Ration'
-import { IRation, rationsMock } from '../../models/IRation'
+import { IRation } from '../../models/IRation'
 import { useState } from 'react'
 import ModalRation from './ModalRation/ModalRation'
 
@@ -14,9 +14,9 @@ export default function Feed() {
 		onSuccess: (data) => {
 			console.log(data)
 		},
+		onError: (error) => console.log(error),
 	})
 
-	const rations = rationsMock
 
 	const [selectedRation, setSelectedRation] = useState<IRation | null>(null)
 
@@ -38,7 +38,7 @@ export default function Feed() {
 				</div>
 			) : (
 				<div className={styles.feed}>
-					{rations.map((ration) => (
+					{fetchFeedQuery.data.map((ration) => (
 						<Ration ration={ration} onClick={() => openModal(ration)} />
 					))}
 				</div>

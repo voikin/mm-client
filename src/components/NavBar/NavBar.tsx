@@ -4,6 +4,11 @@ import { useQuery } from 'react-query'
 import AuthService from '../../services/AuthService'
 import logo from './../../assets/logo.svg'
 import styles from './NavBar.module.scss'
+import RationService from '../../services/RationService'
+import { HiBolt } from 'react-icons/hi2'
+import { useState } from 'react'
+import { IRation } from '../../models/IRation'
+import ModalRation from '../Feed/ModalRation/ModalRation'
 
 const NavBar = () => {
 	const { isAuth, logout, user } = useAuthStore()
@@ -11,6 +16,20 @@ const NavBar = () => {
 		onSuccess: () => logout(),
 		enabled: false,
 	})
+	const [generatedRation, setGeneratedRation] = useState<IRation | null>(null)
+
+	const fetchGenerateQuery = useQuery('', RationService.fetchGenerate, {
+		onSuccess: (data) => {
+			setGeneratedRation(data)
+			console.log(data)
+		},
+		enabled: false,
+	})
+
+
+	const closeModal = () => {
+		setGeneratedRation(null)
+	}
 	return (
 		<header className={styles.header}>
 			<div className={styles.header__logo_block}>
@@ -21,6 +40,7 @@ const NavBar = () => {
 				{isAuth && <p>{user.email}</p>}
 				{isAuth ? (
 					<>
+						<button onClick={() => fetchGenerateQuery.refetch()} className={styles.header__item}><HiBolt/></button>
 						<Link to='/feed' className={styles.header__item}>
 							Лента
 						</Link>
@@ -34,6 +54,7 @@ const NavBar = () => {
 						>
 							Выйти
 						</Link>
+						
 					</>
 				) : (
 					<>
@@ -46,6 +67,9 @@ const NavBar = () => {
 					</>
 				)}
 			</div>
+			{generatedRation && (
+				<ModalRation ration={generatedRation} onClose={closeModal} />
+			)}
 		</header>
 	)
 }
