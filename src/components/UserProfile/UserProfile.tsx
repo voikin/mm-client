@@ -20,7 +20,9 @@ export default function UserProfile() {
 	const { isAuth } = useAuthStore()
 	const fetchUserInfoQuery = useQuery('userData', UserService.fetchUserData, {
 		onSuccess: (data) => {
-			console.log(data)
+			setPreferences(data.preferences)
+			console.log(preferences)
+			console.log(data.preferences)
 		},
 		onError: (e) => {
 			console.log(e)
@@ -29,6 +31,8 @@ export default function UserProfile() {
 	})
 
 	const [selectedRation, setSelectedRation] = useState<IRation | null>(null)
+
+	const [preferences, setPreferences] = useState<string[] | null>(null)
 
 	const openModal = (ration: IRation) => {
 		setSelectedRation(ration)
@@ -67,13 +71,18 @@ export default function UserProfile() {
 							<HiCog6Tooth className={styles.x} onClick={toggleIsEditOpen} />
 						</h2>
 						{isEditOpen ? (
-							<PreferencesEdit />
-						) : (
+							<PreferencesEdit
+								preferences={preferences}
+								setPreferences={setPreferences}
+							/>
+						) : preferences ? (
 							<div className={styles.preferences}>
-								{fetchUserInfoQuery.data.preferences.map((preference) => (
+								{preferences.map((preference) => (
 									<p className={styles.preference}>{preference}</p>
 								))}
 							</div>
+						) : (
+							<h1>lox</h1>
 						)}
 					</div>
 					<div className={styles.preferences_layout}>

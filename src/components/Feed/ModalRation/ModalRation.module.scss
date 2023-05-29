@@ -1,17 +1,27 @@
 .overlay {
-	@apply w-screen h-screen bg-black fixed flex justify-center items-center top-0;
+	@apply w-screen h-screen bg-black fixed flex justify-center items-center top-0 z-10;
 
 	background-color: rgba(0, 0, 0, 0.1);
 
 	.modal_layout {
-		@apply w-5/6 h-3/4 mx-auto my-auto bg-slate-100 rounded opacity-100 py-2 shadow-inner;
+		@apply w-5/6 h-3/4 mx-auto my-auto bg-slate-100 rounded opacity-100 shadow-inner overflow-hidden;
+
+		.nav {
+			@apply flex justify-center items-center gap-4 rounded-t p-1 bg-primary;
+
+			.accept {
+				@apply hover:scale-110 active:scale-100 cursor-pointer hover:shadow-sm rounded transition-transform p-1;
+
+				background-color: #61d269;
+			}
+
+			.decline {
+				@apply hover:scale-110 active:scale-100 cursor-pointer hover:shadow-sm bg-red-400 p-1 rounded transition-transform;
+			}
+		}
 
 		.modal {
-			@apply w-full h-full rounded overflow-scroll relative;
-
-			.nav {
-				@apply fixed flex justify-end top-2 right-2;
-			}
+			@apply w-full h-full rounded overflow-scroll p-2 relative;
 
 			.recipes {
 				@apply p-6;

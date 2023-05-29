@@ -5,7 +5,7 @@ import AuthService from '../../services/AuthService'
 import logo from './../../assets/logo.svg'
 import styles from './NavBar.module.scss'
 import RationService from '../../services/RationService'
-import { HiBolt } from 'react-icons/hi2'
+import { HiArrowPath, HiBolt } from 'react-icons/hi2'
 import { useState } from 'react'
 import { IRation } from '../../models/IRation'
 import ModalRation from '../Feed/ModalRation/ModalRation'
@@ -26,7 +26,6 @@ const NavBar = () => {
 		enabled: false,
 	})
 
-
 	const closeModal = () => {
 		setGeneratedRation(null)
 	}
@@ -40,7 +39,17 @@ const NavBar = () => {
 				{isAuth && <p>{user.email}</p>}
 				{isAuth ? (
 					<>
-						<button onClick={() => fetchGenerateQuery.refetch()} className={styles.header__item}><HiBolt/></button>
+						<button
+							disabled={fetchGenerateQuery.isLoading}
+							onClick={() => fetchGenerateQuery.refetch()}
+							className={styles.header__item}
+						>
+							{fetchGenerateQuery.isLoading ? (
+								<HiArrowPath className='animate-spin' />
+							) : (
+								<HiBolt />
+							)}
+						</button>
 						<Link to='/feed' className={styles.header__item}>
 							Лента
 						</Link>
@@ -54,7 +63,6 @@ const NavBar = () => {
 						>
 							Выйти
 						</Link>
-						
 					</>
 				) : (
 					<>
@@ -68,7 +76,13 @@ const NavBar = () => {
 				)}
 			</div>
 			{generatedRation && (
-				<ModalRation ration={generatedRation} onClose={closeModal} />
+				<ModalRation
+					needConfirm
+					ration={generatedRation}
+					onClose={closeModal}
+					refetch={fetchGenerateQuery.refetch}
+					refetchLoading={fetchGenerateQuery.isLoading}
+				/>
 			)}
 		</header>
 	)

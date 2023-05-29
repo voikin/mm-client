@@ -3,7 +3,12 @@ import { useMutation, useQuery } from 'react-query'
 import RationService from '../../../services/RationService'
 import styles from './PreferencesEdit.module.scss'
 
-export const PreferencesEdit = () => {
+interface preferencesEditProps {
+	preferences: string[]
+	setPreferences: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+export const PreferencesEdit = (props: preferencesEditProps) => {
 	const [query, setQuery] = useState('')
 	const [products, setProducts] = useState([] as string[])
 	const fetchProductsQuery = useQuery('products', RationService.fetchProducts, {
@@ -17,11 +22,14 @@ export const PreferencesEdit = () => {
 	})
 
 	useEffect(() => {
+		console.log(props)
 		if (query && fetchProductsQuery.data && !fetchProductsQuery.isLoading) {
 			setProducts(
 				fetchProductsQuery.data
-					?.filter((product) =>
-						product.toLowerCase().includes(query.toLowerCase())
+					?.filter(
+						(product) =>
+							product.toLowerCase().includes(query.toLowerCase()) &&
+							!props.preferences.includes(product)
 					)
 					.slice(0, 5)
 			)
@@ -32,7 +40,7 @@ export const PreferencesEdit = () => {
 
 	const addPreference = (preference: string) => {
 		addPreferenceMutation.mutate(preference)
-		fetchProductsQuery.refetch()
+		props.setPreferences((state) => [...state, preference])
 		setQuery('')
 	}
 
