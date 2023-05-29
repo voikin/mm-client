@@ -1,13 +1,10 @@
 .overlay {
-	@apply w-screen bg-black absolute top-10 flex justify-center items-center;
-
-	height: calc(100vh - 2.5rem);
+	@apply w-screen h-screen bg-black fixed flex justify-center items-center top-0;
 
 	background-color: rgba(0, 0, 0, 0.1);
 
 	.modal_layout {
-
-		@apply w-5/6 h-5/6 mx-auto my-auto bg-slate-100 rounded opacity-100 py-2 shadow-inner;
+		@apply w-5/6 h-3/4 mx-auto my-auto bg-slate-100 rounded opacity-100 py-2 shadow-inner;
 
 		.modal {
 			@apply w-full h-full rounded overflow-scroll relative;

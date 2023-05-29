@@ -2,11 +2,19 @@ import { useQuery } from 'react-query'
 import UserService from '../../services/UserService'
 import styles from './UserProfile.module.scss'
 import { useAuthStore } from '../../stores/authStore'
-import { HiArrowPath, HiUser } from 'react-icons/hi2'
+import {
+	HiArrowPath,
+	HiCog,
+	HiCog6Tooth,
+	HiGlobeEuropeAfrica,
+	HiUser,
+	HiXMark,
+} from 'react-icons/hi2'
 import { IRation, rationsMock } from '../../models/IRation'
 import { UserInfo } from '../../models/IUser'
 import { useState } from 'react'
 import ModalRation from '../Feed/ModalRation/ModalRation'
+import { PreferencesEdit } from './PreferencesEdit/PreferencesEdit'
 
 export default function UserProfile() {
 	const { isAuth } = useAuthStore()
@@ -30,6 +38,9 @@ export default function UserProfile() {
 		setSelectedRation(null)
 	}
 
+	const [isEditOpen, setIsEditOpen] = useState(false)
+
+	const toggleIsEditOpen = () => setIsEditOpen((state) => !state)
 
 	if (!isAuth)
 		return <div className={styles.auth_error}>Вы не авторизированны</div>
@@ -51,12 +62,19 @@ export default function UserProfile() {
 						</div>
 					</div>
 					<div className={styles.preferences_layout}>
-						<h2>Избранные предпочтения</h2>
-						<div className={styles.preferences}>
-							{fetchUserInfoQuery.data.preferences.map((preference) => (
-								<p className={styles.preference}>{preference}</p>
-							))}
-						</div>
+						<h2>
+							Избранные предпочтения
+							<HiCog6Tooth className={styles.x} onClick={toggleIsEditOpen} />
+						</h2>
+						{isEditOpen ? (
+							<PreferencesEdit />
+						) : (
+							<div className={styles.preferences}>
+								{fetchUserInfoQuery.data.preferences.map((preference) => (
+									<p className={styles.preference}>{preference}</p>
+								))}
+							</div>
+						)}
 					</div>
 					<div className={styles.preferences_layout}>
 						<h2>Попробованные рационы</h2>

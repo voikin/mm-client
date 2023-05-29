@@ -22,6 +22,7 @@ export default function Feed() {
 
 	const openModal = (ration: IRation) => {
 		setSelectedRation(ration)
+		// window.scrollTo(0, 0)
 	}
 
 	const closeModal = () => {

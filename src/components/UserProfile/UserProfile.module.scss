@@ -18,8 +18,14 @@
 	}
 
 	.preferences_layout {
-		@apply w-1/2 max-h-[15rem] flex flex-col items-center mt-8 border border-slate-600 rounded-lg bg-slate-100 font-bold;
+		@apply w-1/2 h-[15rem] flex flex-col items-center mt-8 border border-slate-600 rounded-lg bg-slate-100 font-bold relative overflow-scroll relative;
 
+		h2 {
+			@apply relative flex items-center gap-1;
+			.x {
+				@apply cursor-pointer rounded-full hover:scale-110 active:scale-100 transition-transform;
+			}
+		}
 		.preferences {
 			@apply w-full h-full flex flex-col items-center overflow-scroll border-t border-slate-600 py-2;
 
