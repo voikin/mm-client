@@ -8,6 +8,7 @@ export interface UserInfo {
 	age: number
 	height: number
 	weight: number
+	sex: boolean
 	preferences: string[]
 	triedRations: IRation[]
 }

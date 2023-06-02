@@ -21,4 +21,9 @@ export default class RationService {
 		const response = await $api.put('users/preference/' + preference)
 		return response.data
 	}
+
+	static async confirmRation(ration: IRation) {
+		const response = await $api.post('rations/confirm', ration)
+		return response.data
+	}
 }
